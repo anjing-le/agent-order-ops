@@ -46,6 +46,22 @@ export const ApiPaths = {
     itemDetail: (id: string | number) =>
       bindApiPathParams(SERVICE_BOUNDARY_ROUTE_PATHS.test.itemDetail, { id })
   },
+  orderOps: {
+    orders: SERVICE_BOUNDARY_ROUTE_PATHS.orderOps.orders,
+    orderDetail: (orderNo: string | number) =>
+      bindApiPathParams(SERVICE_BOUNDARY_ROUTE_PATHS.orderOps.orderDetail, { orderNo }),
+    tools: SERVICE_BOUNDARY_ROUTE_PATHS.orderOps.tools,
+    plan: SERVICE_BOUNDARY_ROUTE_PATHS.orderOps.plan,
+    execute: SERVICE_BOUNDARY_ROUTE_PATHS.orderOps.execute,
+    approvals: SERVICE_BOUNDARY_ROUTE_PATHS.orderOps.approvals,
+    approvalConfirm: (approvalId: string | number) =>
+      bindApiPathParams(SERVICE_BOUNDARY_ROUTE_PATHS.orderOps.approvalConfirm, { approvalId }),
+    approvalReject: (approvalId: string | number) =>
+      bindApiPathParams(SERVICE_BOUNDARY_ROUTE_PATHS.orderOps.approvalReject, { approvalId }),
+    auditLogs: SERVICE_BOUNDARY_ROUTE_PATHS.orderOps.auditLogs,
+    compensationRetry: (compensationId: string | number) =>
+      bindApiPathParams(SERVICE_BOUNDARY_ROUTE_PATHS.orderOps.compensationRetry, { compensationId })
+  },
   common: {
     upload: SERVICE_BOUNDARY_ROUTE_PATHS.common.upload,
     uploadImage: SERVICE_BOUNDARY_ROUTE_PATHS.common.uploadImage,

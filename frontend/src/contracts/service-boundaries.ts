@@ -140,6 +140,111 @@ export const SERVICE_BOUNDARY_CONTRACT = {
       ]
     },
     {
+      "id": "order-ops",
+      "name": "Order Operations Agent",
+      "kind": "runtime",
+      "owner": "agent-order-ops",
+      "currentHost": "agent-order-ops",
+      "basePath": "/api/order-ops",
+      "apiConstantsClass": "OrderOps",
+      "apiPathsKey": "orderOps",
+      "controller": "backend/src/main/java/com/anjing/controller/OrderOpsController.java",
+      "openapi": true,
+      "copyAction": "core runtime module for order operations agent teaching scenarios",
+      "routes": [
+        {
+          "name": "orders",
+          "backendConstant": "ORDERS_FULL",
+          "frontendKey": "orders",
+          "path": "/api/order-ops/orders",
+          "methods": [
+            "GET"
+          ]
+        },
+        {
+          "name": "orderDetail",
+          "backendConstant": "ORDER_DETAIL_FULL",
+          "frontendKey": "orderDetail",
+          "path": "/api/order-ops/orders/{orderNo}",
+          "methods": [
+            "GET"
+          ]
+        },
+        {
+          "name": "tools",
+          "backendConstant": "TOOLS_FULL",
+          "frontendKey": "tools",
+          "path": "/api/order-ops/tools",
+          "methods": [
+            "GET"
+          ]
+        },
+        {
+          "name": "plan",
+          "backendConstant": "PLAN_FULL",
+          "frontendKey": "plan",
+          "path": "/api/order-ops/agent/plan",
+          "methods": [
+            "POST"
+          ]
+        },
+        {
+          "name": "execute",
+          "backendConstant": "EXECUTE_FULL",
+          "frontendKey": "execute",
+          "path": "/api/order-ops/agent/execute",
+          "methods": [
+            "POST"
+          ]
+        },
+        {
+          "name": "approvals",
+          "backendConstant": "APPROVALS_FULL",
+          "frontendKey": "approvals",
+          "path": "/api/order-ops/approvals",
+          "methods": [
+            "GET"
+          ]
+        },
+        {
+          "name": "approvalConfirm",
+          "backendConstant": "APPROVAL_CONFIRM_FULL",
+          "frontendKey": "approvalConfirm",
+          "path": "/api/order-ops/approvals/{approvalId}/confirm",
+          "methods": [
+            "POST"
+          ]
+        },
+        {
+          "name": "approvalReject",
+          "backendConstant": "APPROVAL_REJECT_FULL",
+          "frontendKey": "approvalReject",
+          "path": "/api/order-ops/approvals/{approvalId}/reject",
+          "methods": [
+            "POST"
+          ]
+        },
+        {
+          "name": "auditLogs",
+          "backendConstant": "AUDIT_LOGS_FULL",
+          "frontendKey": "auditLogs",
+          "path": "/api/order-ops/audit-logs",
+          "methods": [
+            "GET"
+          ]
+        },
+        {
+          "name": "compensationRetry",
+          "backendConstant": "COMPENSATION_RETRY_FULL",
+          "frontendKey": "compensationRetry",
+          "path": "/api/order-ops/compensations/{compensationId}/retry",
+          "methods": [
+            "POST"
+          ]
+        }
+      ]
+    },
+    {
       "id": "common",
       "name": "Common Platform",
       "kind": "reserved-runtime",
@@ -243,6 +348,7 @@ export const SERVICE_BOUNDARY_BASE_PATHS = {
   "auth": "/api/auth",
   "common": "/api/common",
   "integration": "/api/integration",
+  "orderOps": "/api/order-ops",
   "test": "/api/test",
   "user": "/api/users"
 } as const
@@ -259,6 +365,18 @@ export const SERVICE_BOUNDARY_ROUTE_PATHS = {
     "upload": "/api/common/upload",
     "uploadImage": "/api/common/upload/image",
     "uploadWangEditor": "/api/common/upload/wangeditor"
+  },
+  "orderOps": {
+    "approvalConfirm": "/api/order-ops/approvals/{approvalId}/confirm",
+    "approvalReject": "/api/order-ops/approvals/{approvalId}/reject",
+    "approvals": "/api/order-ops/approvals",
+    "auditLogs": "/api/order-ops/audit-logs",
+    "compensationRetry": "/api/order-ops/compensations/{compensationId}/retry",
+    "execute": "/api/order-ops/agent/execute",
+    "orderDetail": "/api/order-ops/orders/{orderNo}",
+    "orders": "/api/order-ops/orders",
+    "plan": "/api/order-ops/agent/plan",
+    "tools": "/api/order-ops/tools"
   },
   "test": {
     "bizException": "/api/test/exception/biz",

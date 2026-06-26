@@ -9,7 +9,7 @@ public final class ServiceBoundaryConstants {
     public static final int SCHEMA_VERSION = 1;
     public static final String APPLICATION_ID = "agent-order-ops";
     public static final String API_PREFIX = "/api";
-    public static final String[] BOUNDARY_IDS = { "auth", "test", "common", "user", "admin", "integration" };
+    public static final String[] BOUNDARY_IDS = { "auth", "test", "order-ops", "common", "user", "admin", "integration" };
 
     private ServiceBoundaryConstants() {
     }
@@ -45,6 +45,23 @@ public final class ServiceBoundaryConstants {
         public static final String[] ROUTES = { "health", "features", "ping", "bizException", "systemException", "items", "itemDetail" };
 
         private Test() {
+        }
+    }
+
+    public static final class OrderOps {
+        public static final String ID = "order-ops";
+        public static final String NAME = "Order Operations Agent";
+        public static final String KIND = "runtime";
+        public static final String OWNER = "agent-order-ops";
+        public static final String CURRENT_HOST = "agent-order-ops";
+        public static final String BASE_PATH = "/api/order-ops";
+        public static final String API_CONSTANTS_CLASS = "OrderOps";
+        public static final String API_PATHS_KEY = "orderOps";
+        public static final boolean OPENAPI = true;
+        public static final String COPY_ACTION = "core runtime module for order operations agent teaching scenarios";
+        public static final String[] ROUTES = { "orders", "orderDetail", "tools", "plan", "execute", "approvals", "approvalConfirm", "approvalReject", "auditLogs", "compensationRetry" };
+
+        private OrderOps() {
         }
     }
 

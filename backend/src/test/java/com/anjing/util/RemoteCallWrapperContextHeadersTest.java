@@ -50,11 +50,11 @@ class RemoteCallWrapperContextHeadersTest {
 
     @Test
     void serviceCallHeadersShouldCreateTraceHeadersWhenNoRequestContextExists() {
-        Map<String, String> headers = RemoteCallWrapper.serviceCallHeaders("infra-dev-scaffolding");
+        Map<String, String> headers = RemoteCallWrapper.serviceCallHeaders("agent-order-ops");
 
         assertTrue(headers.containsKey(RequestHeaderConstants.REQUEST_ID));
         assertEquals(headers.get(RequestHeaderConstants.REQUEST_ID), headers.get(RequestHeaderConstants.TRACE_ID));
-        assertEquals("infra-dev-scaffolding", headers.get(RequestHeaderConstants.CALLER_ID));
+        assertEquals("agent-order-ops", headers.get(RequestHeaderConstants.CALLER_ID));
         assertFalse(headers.containsKey(RequestHeaderConstants.USER_ID));
     }
 }

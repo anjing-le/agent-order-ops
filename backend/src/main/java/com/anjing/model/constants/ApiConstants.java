@@ -69,6 +69,40 @@ public class ApiConstants {
     }
 
     /**
+     * 订单运营执行 Agent 模块
+     *
+     * 核心功能：订单查询、执行计划、业务动作编排、审批确认、执行审计和失败补偿。
+     */
+    public static class OrderOps {
+        public static final String BASE = API_PREFIX + "/order-ops";
+
+        public static final String ORDERS = "/orders";
+        public static final String ORDER_DETAIL = "/orders/{orderNo}";
+        public static final String TOOLS = "/tools";
+        public static final String PLAN = "/agent/plan";
+        public static final String EXECUTE = "/agent/execute";
+        public static final String APPROVALS = "/approvals";
+        public static final String APPROVAL_CONFIRM = "/approvals/{approvalId}/confirm";
+        public static final String APPROVAL_REJECT = "/approvals/{approvalId}/reject";
+        public static final String AUDIT_LOGS = "/audit-logs";
+        public static final String COMPENSATION_RETRY = "/compensations/{compensationId}/retry";
+
+        public static final String ORDERS_FULL = BASE + ORDERS;
+        public static final String ORDER_DETAIL_FULL = BASE + ORDER_DETAIL;
+        public static final String TOOLS_FULL = BASE + TOOLS;
+        public static final String PLAN_FULL = BASE + PLAN;
+        public static final String EXECUTE_FULL = BASE + EXECUTE;
+        public static final String APPROVALS_FULL = BASE + APPROVALS;
+        public static final String APPROVAL_CONFIRM_FULL = BASE + APPROVAL_CONFIRM;
+        public static final String APPROVAL_REJECT_FULL = BASE + APPROVAL_REJECT;
+        public static final String AUDIT_LOGS_FULL = BASE + AUDIT_LOGS;
+        public static final String COMPENSATION_RETRY_FULL = BASE + COMPENSATION_RETRY;
+
+        private OrderOps() {
+        }
+    }
+
+    /**
      * 🎯 用户业务模块
      * 
      * 核心功能：用户注册、登录、信息管理、权限控制

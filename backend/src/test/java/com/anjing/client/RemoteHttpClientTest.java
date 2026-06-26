@@ -191,7 +191,7 @@ class RemoteHttpClientTest {
         assertEquals("inventory", observer.observation.targetService());
         assertEquals("/api/items", observer.observation.path());
         assertEquals("http://inventory.local/api/items", observer.observation.url());
-        assertEquals("infra-dev-scaffolding-test", observer.observation.callerId());
+        assertEquals("agent-order-ops-test", observer.observation.callerId());
         assertEquals("rid-observe", observer.observation.requestId());
         assertEquals("tid-observe", observer.observation.traceId());
         assertEquals("tenant-observe", observer.observation.tenantId());
@@ -247,10 +247,10 @@ class RemoteHttpClientTest {
         assertEquals("request-caller", resolver.resolveCallerId(RemoteHttpRequest.builder()
                 .callerId("request-caller")
                 .build()));
-        assertEquals("infra-dev-scaffolding-test", resolver.resolveCallerId(RemoteHttpRequest.builder().build()));
+        assertEquals("agent-order-ops-test", resolver.resolveCallerId(RemoteHttpRequest.builder().build()));
 
         properties.setDefaultCallerId("");
-        assertEquals("infra-dev-scaffolding", resolver.resolveCallerId(RemoteHttpRequest.builder().build()));
+        assertEquals("agent-order-ops", resolver.resolveCallerId(RemoteHttpRequest.builder().build()));
     }
 
     @Test
@@ -300,7 +300,7 @@ class RemoteHttpClientTest {
         properties.getPolicy().getBlockedServiceIds().add("inventory");
         ConfiguredRemoteCallPolicy policy = new ConfiguredRemoteCallPolicy(properties);
 
-        assertDoesNotThrow(() -> policy.beforeCall(policyContext("inventory", "infra-dev-scaffolding-test")));
+        assertDoesNotThrow(() -> policy.beforeCall(policyContext("inventory", "agent-order-ops-test")));
     }
 
     @Test
@@ -312,7 +312,7 @@ class RemoteHttpClientTest {
 
         SystemException error = assertThrows(
                 SystemException.class,
-                () -> policy.beforeCall(policyContext("inventory", "infra-dev-scaffolding-test"))
+                () -> policy.beforeCall(policyContext("inventory", "agent-order-ops-test"))
         );
 
         assertEquals(RemoteErrorCode.REMOTE_CALL_PERMISSION_DENIED, error.getErrorCode());
@@ -329,7 +329,7 @@ class RemoteHttpClientTest {
 
         SystemException error = assertThrows(
                 SystemException.class,
-                () -> policy.beforeCall(policyContext("inventory", "infra-dev-scaffolding-test"))
+                () -> policy.beforeCall(policyContext("inventory", "agent-order-ops-test"))
         );
         assertEquals(RemoteErrorCode.REMOTE_CALL_PERMISSION_DENIED, error.getErrorCode());
     }
@@ -348,7 +348,7 @@ class RemoteHttpClientTest {
 
         SystemException error = assertThrows(
                 SystemException.class,
-                () -> policy.beforeCall(policyContext("inventory", "infra-dev-scaffolding-test"))
+                () -> policy.beforeCall(policyContext("inventory", "agent-order-ops-test"))
         );
         assertEquals(RemoteErrorCode.REMOTE_CALL_PERMISSION_DENIED, error.getErrorCode());
     }
@@ -371,7 +371,7 @@ class RemoteHttpClientTest {
     private RemoteHttpClientProperties properties() {
         RemoteHttpClientProperties properties = new RemoteHttpClientProperties();
         properties.getServiceBaseUrls().put("inventory", "http://inventory.local");
-        properties.setDefaultCallerId("infra-dev-scaffolding-test");
+        properties.setDefaultCallerId("agent-order-ops-test");
         return properties;
     }
 
