@@ -1,9 +1,12 @@
 # Project Document
 
-本目录存放 `infra-dev-scaffolding` 的定位、规划、验收标准和进度记录。
+本目录存放 `agent-order-ops` 的教学设计、工程约束、契约指南、验收标准和进度记录。
+
+`agent-order-ops` 基于 `infra-dev-scaffolding` 初始化，保留脚手架的前后端契约、质量门禁和复制规则，同时把运行模块替换为订单运营执行 Agent。
 
 ## 文档
 
+- [ORDER_OPS_AGENT_GUIDE.md](./ORDER_OPS_AGENT_GUIDE.md)：订单运营执行 Agent 教学指南，覆盖 Tool Calling、动作编排、审批、幂等、审计和失败补偿。
 - [ROADMAP.md](./ROADMAP.md)：项目定位、阶段规划、边界和成功标准。
 - [PROJECT_CONSTRAINTS.md](./PROJECT_CONSTRAINTS.md)：项目长期约束、防破窗规则和脚本门禁清单。
 - [NEW_MODULE_GUIDE.md](./NEW_MODULE_GUIDE.md)：新增业务模块时的前后端契约、交付顺序和 AI Prompt 约束。
@@ -24,7 +27,7 @@
 
 ## 维护原则
 
-- 所有规划要服务于“开源工程母版”这个目标。
+- 所有规划要服务于“订单运营执行 Agent 教学项目”这个目标。
 - 新增能力必须先对齐 [PROJECT_CONSTRAINTS.md](./PROJECT_CONSTRAINTS.md)。
 - 文档里的启动命令、端口、验证命令必须和当前代码一致。
-- 新增功能如果不能被后续 Agent / Infra 项目复用，应放到临时复制项目或独立示例仓库中，而不是污染底座。
+- 新增功能必须能服务订单查询、业务动作编排、审批确认、幂等、审计或补偿等教学场景；纯平台能力沿用脚手架契约，不在本项目里扩张。

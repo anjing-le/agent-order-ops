@@ -56,7 +56,7 @@ frontend/src/contracts/openapi/operations.ts
 
 `schemas.ts` 保存 DTO / VO schema 类型；`operations.ts` 保存运行接口的 operationId、method、path、pathParams、query、request 类型、response envelope 类型和 data 类型。`src/api/model/**` 优先从 operation 类型派生请求/响应类型。页面不要直接依赖生成目录，避免生成格式变化影响业务页面；API model 层负责做必要的前端兼容字段和命名适配。
 
-当前 `frontend/src/api/model/authModel.ts` 已从 `OpenApiOperationRequest<'login'>`、`OpenApiOperationData<'login'>`、`OpenApiOperationData<'getCurrentUser'>` 和 `OpenApiOperationRequest<'refreshToken'>` 派生登录相关类型。
+当前 `frontend/src/api/model/authModel.ts` 已从 `OpenApiOperationRequest<'login'>`、`OpenApiOperationData<'login'>`、`OpenApiOperationData<'getCurrentUser'>` 和 `OpenApiOperationRequest<'refreshToken'>` 派生登录相关类型。`frontend/src/api/model/orderOpsModel.ts` 已从 `listOrderOpsOrders`、`getOrderOpsOrderDetail`、`planOrderOpsAgentAction`、`executeOrderOpsAgentAction`、`listOrderOpsApprovals`、`listOrderOpsAuditLogs` 和 `retryOrderOpsCompensation` 等 operation 派生订单运营 Agent 类型。
 
 ## Frontend Runtime Helper
 
@@ -74,7 +74,7 @@ openApiRequest('getItem', {
 
 它从 `OPENAPI_OPERATIONS` 读取 method/path，通过生成的 `OpenApiOperationPathParams<T>` 和 `OpenApiOperationQuery<T>` 约束 `pathParams/query`，再用 `bindOpenApiPathParams` 绑定 `{id}` 这类路径参数，并复用现有 `utils/http` 的 token、上下文请求头、错误处理和消息提示能力。需要非 Axios 完整地址时使用 `resolveOpenApiPath(operationId, pathParams)`。
 
-当前 `frontend/src/api/auth.ts` 已改为通过 `openApiRequest('login')`、`openApiRequest('getCurrentUser')` 和 `openApiRequest('refreshToken')` 调用运行接口。批量生成每个模块的完整 API client 仍作为后续 S7 任务推进。
+当前 `frontend/src/api/auth.ts` 已改为通过 `openApiRequest('login')`、`openApiRequest('getCurrentUser')` 和 `openApiRequest('refreshToken')` 调用运行接口；`frontend/src/api/order-ops.ts` 已通过 `openApiRequest(operationId)` 调用订单列表、计划、执行、审批、审计和补偿接口。批量生成每个模块的完整 API client 仍作为后续 S7 任务推进。
 
 ## Verification
 

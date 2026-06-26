@@ -58,10 +58,19 @@ mvn spring-boot:run
 | 审批确认 | 人工确认高风险退款、地址修改和拦截动作 |
 | 审计日志 | 查看每次计划、执行、失败和补偿记录 |
 
+## 教学路径
+
+1. 登录游客账号后进入 `/order-ops/console`，从订单池选择一笔订单。
+2. 点击“生成计划”观察 Agent 如何拆出工具调用序列。
+3. 执行“优惠补偿”并复用同一个 idempotency key，观察幂等重放。
+4. 执行“发货拦截 / 地址修改 / 退款申请”，观察高风险动作进入审批单。
+5. 在审批区确认或拒绝，随后到审计和补偿区查看执行边界。
+
 ## 工程文档
 
 | 想做什么 | 看这里 |
 | --- | --- |
+| 学习执行型 Agent 链路 | [ORDER_OPS_AGENT_GUIDE.md](./project_document/ORDER_OPS_AGENT_GUIDE.md) |
 | 复制成新项目 | [COPY_GUIDE.md](./project_document/COPY_GUIDE.md) |
 | 让 Codex 接手 | [SCAFFOLD_ADOPTION_PROMPT.md](./project_document/SCAFFOLD_ADOPTION_PROMPT.md) |
 | 理解项目约束 | [PROJECT_CONSTRAINTS.md](./project_document/PROJECT_CONSTRAINTS.md) |
