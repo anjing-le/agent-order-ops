@@ -1,0 +1,279 @@
+# Agent Order Ops 配置文件
+# 订单运营执行 Agent 教学项目 - 条件化配置版本
+
+# 基础配置
+server:
+  port: ${SERVER_PORT:18090}
+  shutdown: graceful
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: agent-order-ops
+
+  autoconfigure:
+    exclude:
+      - org.redisson.spring.starter.RedissonAutoConfigurationV2
+  
+  # 环境配置
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  
+  # 数据源配置
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/agent_order_ops?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:your_password_here}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    
+    # Druid连接池配置
+    druid:
+      # 初始连接数
+      initial-size: 5
+      # 最小连接池数量
+      min-idle: 10
+      # 最大连接池数量
+      max-active: 20
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      max-evictable-idle-time-millis: 900000
+      # 配置检测连接是否有效
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,slf4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connection-properties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+      # 配置DruidStatFilter
+      web-stat-filter:
+        enabled: true
+        url-pattern: "/*"
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+      # 配置DruidStatViewServlet
+      stat-view-servlet:
+        enabled: true
+        # 设置白名单，不填则允许所有访问
+        allow: 127.0.0.1,192.168.0.0/16
+        url-pattern: "/druid/*"
+        # 控制台管理用户名和密码（建议生产环境通过环境变量配置）
+        login-username: ${DRUID_USERNAME:admin}
+      login-password: ${DRUID_PASSWORD:change_me}
+      filter:
+        stat:
+          enabled: true
+          # 慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+  
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        # 显示SQL参数绑定
+        show_sql: true
+        use_sql_comments: true
+        # 统计信息
+        generate_statistics: false
+  
+  # Redis配置
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: ${REDIS_DATABASE:0}
+      timeout: ${REDIS_TIMEOUT:5000}
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+  
+  # Jackson配置
+  jackson:
+    time-zone: ${APP_TIME_ZONE:UTC}
+    date-format: yyyy-MM-dd'T'HH:mm:ssXXX
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+
+# 🔥 日志配置 - 统一标准v1.0
+# 注意：详细的日志配置在 logback-spring.xml 中，包括文件输出、日志分类等
+logging:
+  level:
+    root: INFO
+    com.anjing: DEBUG
+    org.springframework.web: INFO
+    # Hibernate SQL日志（开发环境）
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    # Spring Data JPA日志
+    org.springframework.data.jpa: DEBUG
+    # 抑制JPA Named Query查找日志（抑制 "Did not find named query" 信息）
+    org.springframework.data.jpa.repository.query.NamedQuery: ERROR
+    org.springframework.data.jpa.repository.query.QueryEnhancerFactory: WARN
+    # Spring框架日志
+    org.springframework.boot: INFO
+    org.springframework.security: INFO
+    # 连接池日志
+    com.alibaba.druid: INFO
+    # HTTP客户端日志
+    org.apache.http: WARN
+  pattern:
+    # 控制台格式由logback-spring.xml统一管理
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [rid=%X{requestId} tid=%X{traceId} tenant=%X{tenantId} user=%X{userId}] %logger{36} - %msg%n"
+    # 文件格式由logback-spring.xml统一管理
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] [rid=%X{requestId} tid=%X{traceId} tenant=%X{tenantId} user=%X{userId}] %logger{40} - %msg%n"
+
+# 🔥 自定义日志配置
+anjing:
+  logging:
+    # 日志文件路径
+    path: logs
+    # 应用ID（用于日志标识）
+    app-id: ${spring.application.name}
+    # 是否启用SQL日志文件
+    enable-sql-file: true
+    # 是否启用JSON格式日志
+    enable-json-log: false
+    # 异步日志队列大小
+    async-queue-size: 1024
+    # 日志压缩配置
+    compression:
+      enabled: true
+      # 压缩文件保留天数
+      max-history: 30
+
+# 管理端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# OpenAPI contract endpoint.
+# Dev/test expose it for frontend type generation and integration checks; prod disables it by default.
+springdoc:
+  api-docs:
+    enabled: ${OPENAPI_API_DOCS_ENABLED:true}
+    path: /v3/api-docs
+  packages-to-scan: com.anjing.controller
+  paths-to-match: /api/**
+
+# 🎛️ 功能特性配置 - 条件化启用各种功能
+app:
+  # 异步执行器：@Async、后台任务和未来 adapter 统一走这里，自动传播请求上下文和 MDC
+  async:
+    core-pool-size: ${APP_ASYNC_CORE_POOL_SIZE:4}
+    max-pool-size: ${APP_ASYNC_MAX_POOL_SIZE:16}
+    queue-capacity: ${APP_ASYNC_QUEUE_CAPACITY:200}
+    keep-alive-seconds: ${APP_ASYNC_KEEP_ALIVE_SECONDS:60}
+    thread-name-prefix: ${APP_ASYNC_THREAD_NAME_PREFIX:anjing-async-}
+    wait-for-tasks-to-complete-on-shutdown: ${APP_ASYNC_WAIT_FOR_TASKS_ON_SHUTDOWN:true}
+    await-termination-seconds: ${APP_ASYNC_AWAIT_TERMINATION_SECONDS:30}
+
+  # 远程 HTTP 调用默认配置：用于未来服务间调用或外部 API 适配
+  remote-http:
+    default-caller-id: ${APP_REMOTE_CALLER_ID:agent-order-ops}
+    connect-timeout-ms: ${REMOTE_HTTP_CONNECT_TIMEOUT_MS:3000}
+    read-timeout-ms: ${REMOTE_HTTP_READ_TIMEOUT_MS:5000}
+    default-retry-count: ${REMOTE_HTTP_DEFAULT_RETRY_COUNT:0}
+    default-retry-interval-ms: ${REMOTE_HTTP_DEFAULT_RETRY_INTERVAL_MS:1000}
+    policy:
+      enabled: ${REMOTE_HTTP_POLICY_ENABLED:false}
+      blocked-service-ids: ${REMOTE_HTTP_POLICY_BLOCKED_SERVICE_IDS:}
+      allowed-caller-ids: ${REMOTE_HTTP_POLICY_ALLOWED_CALLER_IDS:}
+      allowed-caller-ids-by-service: {}
+    service-base-urls:
+      agent-order-ops: ${APP_SELF_BASE_URL:http://localhost:18090}
+      infra-auth: ${INFRA_AUTH_BASE_URL:}
+      infra-api-gateway: ${INFRA_API_GATEWAY_BASE_URL:}
+      infra-skill-hub: ${INFRA_SKILL_HUB_BASE_URL:}
+
+  features:
+    # Redis功能配置
+    redis:
+      enabled: true                     # 是否启用Redis
+      host: localhost                  # Redis主机
+      port: 6379                      # Redis端口
+      timeout: 5000                   # 连接超时(毫秒)
+      cluster: false                  # 是否集群模式
+
+    # 缓存功能配置
+    cache:
+      enabled: true                   # 是否启用缓存
+      type: redis                     # 缓存类型: redis/memory
+      default-ttl: 3600              # 默认过期时间(秒)
+      enable-stats: true              # 是否启用缓存统计
+    
+    # 分布式锁功能配置
+    distributed-lock:
+      enabled: true                   # 是否启用分布式锁
+      provider: redisson              # 锁提供者: redisson/local
+      default-wait-time: 10           # 默认等待时间(秒)
+      default-expire-time: 30         # 默认过期时间(秒)
+    
+    # 数据库功能配置
+    database:
+      enabled: true                   # 是否启用数据库
+      show-sql: true                  # 是否显示SQL
+      enable-auditing: true           # 是否启用JPA审计
+      enable-pool-monitoring: true    # 是否启用连接池监控
+    
+    # 中间件功能配置
+    middleware:
+      # Kafka消息队列
+      kafka:
+        enabled: false                # 是否启用Kafka
+        bootstrap-servers: localhost:9092
+        group-id: agent-order-ops
+      
+      # MinIO对象存储
+      minio:
+        enabled: false                # 是否启用MinIO
+        endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
+        access-key: ${MINIO_ACCESS_KEY:}
+        secret-key: ${MINIO_SECRET_KEY:}
+        bucket-name: ${MINIO_BUCKET:default}
+      
+      # OSS云存储
+      oss:
+        enabled: false                # 是否启用OSS
+        provider: aliyun              # 提供商: aliyun/tencent/aws
+        endpoint: ${OSS_ENDPOINT:}
+        access-key: ${OSS_ACCESS_KEY:}
+        secret-key: ${OSS_SECRET_KEY:}
+        bucket-name: ${OSS_BUCKET:}
+    
+    # 监控功能配置
+    monitoring:
+      enabled: true                   # 是否启用监控
+      enable-performance: true        # 是否启用性能监控
+      enable-health-check: true       # 是否启用健康检查
+      enable-metrics: true            # 是否启用指标收集
