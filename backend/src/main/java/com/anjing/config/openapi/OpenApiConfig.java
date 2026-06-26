@@ -22,9 +22,9 @@ public class OpenApiConfig {
     public OpenAPI anjingOpenApi() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Anjing Infra Dev Scaffolding API")
+                        .title("Anjing Agent Order Ops API")
                         .version("1.0.0")
-                        .description("Runtime API contract for frontend typing, AI code generation, and service integration."))
+                        .description("Runtime API contract for the order operations execution Agent teaching project."))
                 .servers(List.of(new Server()
                         .url("/")
                         .description("Current application origin")));

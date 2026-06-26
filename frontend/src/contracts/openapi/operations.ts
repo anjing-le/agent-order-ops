@@ -13,6 +13,11 @@ export interface OpenApiOperationMeta {
 }
 
 export const OPENAPI_OPERATIONS = {
+  confirmOrderOpsApproval: {
+    method: "POST",
+    path: "/api/order-ops/approvals/{approvalId}/confirm",
+    operationId: "confirmOrderOpsApproval"
+  },
   createItem: {
     method: "POST",
     path: "/api/test/items",
@@ -22,6 +27,11 @@ export const OPENAPI_OPERATIONS = {
     method: "DELETE",
     path: "/api/test/items/{id}",
     operationId: "deleteItem"
+  },
+  executeOrderOpsAgentAction: {
+    method: "POST",
+    path: "/api/order-ops/agent/execute",
+    operationId: "executeOrderOpsAgentAction"
   },
   features: {
     method: "GET",
@@ -38,6 +48,11 @@ export const OPENAPI_OPERATIONS = {
     path: "/api/test/items/{id}",
     operationId: "getItem"
   },
+  getOrderOpsOrderDetail: {
+    method: "GET",
+    path: "/api/order-ops/orders/{orderNo}",
+    operationId: "getOrderOpsOrderDetail"
+  },
   health: {
     method: "GET",
     path: "/api/test/health",
@@ -47,6 +62,26 @@ export const OPENAPI_OPERATIONS = {
     method: "GET",
     path: "/api/test/items",
     operationId: "listItems"
+  },
+  listOrderOpsApprovals: {
+    method: "GET",
+    path: "/api/order-ops/approvals",
+    operationId: "listOrderOpsApprovals"
+  },
+  listOrderOpsAuditLogs: {
+    method: "GET",
+    path: "/api/order-ops/audit-logs",
+    operationId: "listOrderOpsAuditLogs"
+  },
+  listOrderOpsOrders: {
+    method: "GET",
+    path: "/api/order-ops/orders",
+    operationId: "listOrderOpsOrders"
+  },
+  listOrderOpsTools: {
+    method: "GET",
+    path: "/api/order-ops/tools",
+    operationId: "listOrderOpsTools"
   },
   login: {
     method: "POST",
@@ -63,10 +98,25 @@ export const OPENAPI_OPERATIONS = {
     path: "/api/test/ping",
     operationId: "ping"
   },
+  planOrderOpsAgentAction: {
+    method: "POST",
+    path: "/api/order-ops/agent/plan",
+    operationId: "planOrderOpsAgentAction"
+  },
   refreshToken: {
     method: "POST",
     path: "/api/auth/refresh",
     operationId: "refreshToken"
+  },
+  rejectOrderOpsApproval: {
+    method: "POST",
+    path: "/api/order-ops/approvals/{approvalId}/reject",
+    operationId: "rejectOrderOpsApproval"
+  },
+  retryOrderOpsCompensation: {
+    method: "POST",
+    path: "/api/order-ops/compensations/{compensationId}/retry",
+    operationId: "retryOrderOpsCompensation"
   },
   testBizException: {
     method: "GET",
@@ -88,6 +138,13 @@ export const OPENAPI_OPERATIONS = {
 export type OpenApiOperationId = keyof typeof OPENAPI_OPERATIONS
 
 export interface OpenApiOperationTypes {
+  confirmOrderOpsApproval: {
+    pathParams: { approvalId: string }
+    query: undefined
+    request: Schemas.ApprovalDecisionRequest
+    response: Schemas.APIResponseApprovalTicketView
+    data: NonNullable<Schemas.APIResponseApprovalTicketView['data']>
+  }
   createItem: {
     pathParams: undefined
     query: undefined
@@ -101,6 +158,13 @@ export interface OpenApiOperationTypes {
     request: undefined
     response: Schemas.APIResponseVoid
     data: NonNullable<Schemas.APIResponseVoid['data']>
+  }
+  executeOrderOpsAgentAction: {
+    pathParams: undefined
+    query: undefined
+    request: Schemas.AgentExecuteRequest
+    response: Schemas.APIResponseExecutionResultView
+    data: NonNullable<Schemas.APIResponseExecutionResultView['data']>
   }
   features: {
     pathParams: undefined
@@ -123,6 +187,13 @@ export interface OpenApiOperationTypes {
     response: Schemas.APIResponseMapStringObject
     data: NonNullable<Schemas.APIResponseMapStringObject['data']>
   }
+  getOrderOpsOrderDetail: {
+    pathParams: { orderNo: string }
+    query: undefined
+    request: undefined
+    response: Schemas.APIResponseOrderView
+    data: NonNullable<Schemas.APIResponseOrderView['data']>
+  }
   health: {
     pathParams: undefined
     query: undefined
@@ -136,6 +207,34 @@ export interface OpenApiOperationTypes {
     request: undefined
     response: Schemas.APIResponseMapStringObject
     data: NonNullable<Schemas.APIResponseMapStringObject['data']>
+  }
+  listOrderOpsApprovals: {
+    pathParams: undefined
+    query: { status?: "PENDING" | "APPROVED" | "REJECTED" }
+    request: undefined
+    response: Schemas.APIResponseListApprovalTicketView
+    data: NonNullable<Schemas.APIResponseListApprovalTicketView['data']>
+  }
+  listOrderOpsAuditLogs: {
+    pathParams: undefined
+    query: { limit?: number; orderNo?: string }
+    request: undefined
+    response: Schemas.APIResponseListAuditLogView
+    data: NonNullable<Schemas.APIResponseListAuditLogView['data']>
+  }
+  listOrderOpsOrders: {
+    pathParams: undefined
+    query: { keyword?: string; orderStatus?: "CREATED" | "PAID" | "FULFILLING" | "SHIPPED" | "DELIVERED" | "CLOSED" | "CANCELLED" }
+    request: undefined
+    response: Schemas.APIResponseListOrderView
+    data: NonNullable<Schemas.APIResponseListOrderView['data']>
+  }
+  listOrderOpsTools: {
+    pathParams: undefined
+    query: undefined
+    request: undefined
+    response: Schemas.APIResponseListToolDefinitionView
+    data: NonNullable<Schemas.APIResponseListToolDefinitionView['data']>
   }
   login: {
     pathParams: undefined
@@ -158,12 +257,33 @@ export interface OpenApiOperationTypes {
     response: Schemas.APIResponseString
     data: NonNullable<Schemas.APIResponseString['data']>
   }
+  planOrderOpsAgentAction: {
+    pathParams: undefined
+    query: undefined
+    request: Schemas.AgentPlanRequest
+    response: Schemas.APIResponseAgentPlanView
+    data: NonNullable<Schemas.APIResponseAgentPlanView['data']>
+  }
   refreshToken: {
     pathParams: undefined
     query: undefined
     request: Schemas.RefreshTokenRequest
     response: Schemas.APIResponseAuthTokenResponse
     data: NonNullable<Schemas.APIResponseAuthTokenResponse['data']>
+  }
+  rejectOrderOpsApproval: {
+    pathParams: { approvalId: string }
+    query: undefined
+    request: Schemas.ApprovalDecisionRequest
+    response: Schemas.APIResponseApprovalTicketView
+    data: NonNullable<Schemas.APIResponseApprovalTicketView['data']>
+  }
+  retryOrderOpsCompensation: {
+    pathParams: { compensationId: string }
+    query: undefined
+    request: Schemas.ApprovalDecisionRequest
+    response: Schemas.APIResponseCompensationTaskView
+    data: NonNullable<Schemas.APIResponseCompensationTaskView['data']>
   }
   testBizException: {
     pathParams: undefined

@@ -5,11 +5,11 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PORT="${1:-18180}"
 ATTEMPTS="${PROBE_ATTEMPTS:-90}"
 TMP_ROOT="${TMPDIR:-/tmp}"
-LOG_FILE="$TMP_ROOT/infra-dev-scaffolding-backend-probe.$PORT.log"
-PID_FILE="$TMP_ROOT/infra-dev-scaffolding-backend-probe.$PORT.pid"
-HEALTH_FILE="$TMP_ROOT/infra-dev-scaffolding-backend-health.$PORT.json"
-FEATURES_FILE="$TMP_ROOT/infra-dev-scaffolding-backend-features.$PORT.json"
-OPENAPI_FILE="$TMP_ROOT/infra-dev-scaffolding-backend-openapi.$PORT.json"
+LOG_FILE="$TMP_ROOT/agent-order-ops-backend-probe.$PORT.log"
+PID_FILE="$TMP_ROOT/agent-order-ops-backend-probe.$PORT.pid"
+HEALTH_FILE="$TMP_ROOT/agent-order-ops-backend-health.$PORT.json"
+FEATURES_FILE="$TMP_ROOT/agent-order-ops-backend-features.$PORT.json"
+OPENAPI_FILE="$TMP_ROOT/agent-order-ops-backend-openapi.$PORT.json"
 
 cleanup() {
   if [[ -f "$PID_FILE" ]]; then
@@ -80,7 +80,7 @@ const redis = features.data.features.find((item) => item.name === 'Redis')
 assert(redis?.status === 'disabled', 'dev Redis must be disabled')
 
 assert(String(openapi.openapi || '').startsWith('3.'), 'OpenAPI version must be 3.x')
-assert(openapi.info?.title === 'Anjing Infra Dev Scaffolding API', 'OpenAPI title mismatch')
+assert(openapi.info?.title === 'Anjing Agent Order Ops API', 'OpenAPI title mismatch')
 assert(openapi.paths?.['/api/auth/login']?.post, 'OpenAPI must include POST /api/auth/login')
 assert(openapi.paths?.['/api/auth/me']?.get, 'OpenAPI must include GET /api/auth/me')
 assert(openapi.paths?.['/api/test/health']?.get, 'OpenAPI must include GET /api/test/health')
