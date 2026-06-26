@@ -247,6 +247,10 @@
     "outside": {
       "title": "Outside"
     },
+    "orderOps": {
+      "title": "Order Ops Agent",
+      "console": "Execution Console"
+    },
     "dashboard": {
       "title": "Dashboard",
       "console": "Console"

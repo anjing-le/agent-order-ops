@@ -247,6 +247,10 @@
     "outside": {
       "title": "内嵌页面"
     },
+    "orderOps": {
+      "title": "订单运营 Agent",
+      "console": "执行台"
+    },
     "dashboard": {
       "title": "仪表盘",
       "console": "工作台"
